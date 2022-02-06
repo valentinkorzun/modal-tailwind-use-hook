@@ -2,11 +2,18 @@ import React, { useEffect } from "react";
 
 export const useClickOutside = (ref, handler) => {
   useEffect(() => {
-    const listener = (event) => {
-      if (!ref.current || ref.current.contains(event.target)) {
+    const listener = (e) => {
+      // if the user clicked on the scroll.
+      if (
+        e.offsetX > e.target.clientWidth ||
+        e.offsetY > e.target.clientHeight
+      ) {
         return;
       }
-      handler(event);
+      if (!ref.current || ref.current.contains(e.target)) {
+        return;
+      }
+      handler(e);
     };
     document.addEventListener("mousedown", listener);
     document.addEventListener("touchstart", listener);
