@@ -8,7 +8,7 @@ import { useClickOutside, useEsc } from "../hooks";
 export const useModal = (parent = "root") => {
   const ref = useRef(null);
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
   const handleOpen = useCallback(() => setIsOpen(true), []);

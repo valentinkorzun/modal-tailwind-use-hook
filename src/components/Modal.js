@@ -6,13 +6,10 @@ const Modal = forwardRef(({ children, isOpen, onClose, parent }, ref) => {
 
   return (
     <Portal parent={parent}>
-      <div className="fixed inset-0 z-10 overflow-y-auto">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="fixed inset-0 bg-gray-900 opacity-50 z-0" />
-          <div
-            className="relative bg-white w-100 mx-12 my-12 rounded shadow-lg z-30"
-            ref={ref}
-          >
+      <div className="fixed inset-0 z-10">
+        <div className="fixed inset-0 bg-gray-900 opacity-50 z-20" />
+        <div className="fixed w-full h-full z-30 overflow-y-auto grid place-items-center">
+          <div className="max-w-lg py-4 text-left px-6 bg-white rounded shadow-lg m-5" ref={ref}>
             {children}
           </div>
         </div>
