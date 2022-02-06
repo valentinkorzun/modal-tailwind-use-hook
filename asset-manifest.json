@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/modal-tailwind-use-hook/static/css/main.6c13868c.css",
+    "main.js": "/modal-tailwind-use-hook/static/js/main.493db945.js",
+    "index.html": "/modal-tailwind-use-hook/index.html",
+    "main.6c13868c.css.map": "/modal-tailwind-use-hook/static/css/main.6c13868c.css.map",
+    "main.493db945.js.map": "/modal-tailwind-use-hook/static/js/main.493db945.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6c13868c.css",
+    "static/js/main.493db945.js"
+  ]
+}
