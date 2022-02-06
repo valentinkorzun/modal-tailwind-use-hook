@@ -1,12 +1,13 @@
 import { Modal, ModalContent } from "./components";
 import { useModal } from "./hooks";
+import React from "react";
 
 function App() {
-  const { close, open, Modal } = useModal();
+  const { close, open, isOpen, ref } = useModal();
 
   return (
     <>
-      <Modal>
+      <Modal ref={ref} isOpen={isOpen} onClose={close}>
         <ModalContent close={close} />
       </Modal>
 
