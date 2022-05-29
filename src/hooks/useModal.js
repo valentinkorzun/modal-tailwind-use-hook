@@ -1,8 +1,6 @@
 import React, { useCallback, useRef } from "react";
 import { useState } from "react";
-import { useClickOutside, useEsc } from "../hooks";
-
-//window.innerWidth - document.documentElement.clientWidth; --scrollbar width
+import { useClickOutside, useEsc, useScrollLock } from "../hooks";
 
 export const useModal = () => {
   const ref = useRef(null);
@@ -11,6 +9,7 @@ export const useModal = () => {
   const handleOpen = useCallback(() => setIsOpen(true), []);
   const handleClose = useCallback(() => setIsOpen(false), []);
 
+  useScrollLock(isOpen);
   useClickOutside(ref, handleClose);
   useEsc(handleClose);
 
