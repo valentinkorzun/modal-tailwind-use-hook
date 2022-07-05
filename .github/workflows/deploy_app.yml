@@ -8,6 +8,7 @@ env:
   AWS_PRODUCTION_BUCKET_NAME: react-app-production
   SOURCE_DIR: build
   PATH_TO_INVALIDATE: /*
+  CI: false
 
 jobs:
   cancel_previous_runs:
