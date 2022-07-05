@@ -1,0 +1,62 @@
+name: Deploy App
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: eu-west-1
+  AWS_PRODUCTION_BUCKET_NAME: react-app-production
+  SOURCE_DIR: build
+  PATH_TO_INVALIDATE: /*
+
+jobs:
+  cancel_previous_runs:
+    name: 'Cancel Previous Auto-Deploy Runs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          workflow_id: deploy_app.yml
+          access_token: ${{ github.token }}
+
+  deploy_app:
+    name: Deploy React App
+    needs: cancel_previous_runs
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 16.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: |
+          npm install
+      - name: npm build
+        run: |
+          npm run build
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --delete
+        env:
+          AWS_S3_BUCKET: ${{ env.AWS_PRODUCTION_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          SOURCE_DIR: ${{ env.SOURCE_DIR }}
+      - name: Invalidate Cloudfront Cache
+        uses: docker://rewindio/github-action-cloudfront-invalidate
+        env:
+          DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_PRODUCTION_DISTRIBUTION_ID }}
+          PATH_TO_INVALIDATE: ${{ env.PATH_TO_INVALIDATE }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
