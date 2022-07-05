@@ -12,7 +12,7 @@ function App() {
       </ModalWrapper>
 
       <button onClick={open} className="bg-amber-300 p-5 m-5">
-        Open
+        Open My Modal
       </button>
     </>
   );
